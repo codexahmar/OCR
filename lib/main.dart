@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/views/splash_screen.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:provider/provider.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import 'controllers/arithmetic_provider.dart';
-import 'views/home_screen.dart';
+
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -31,7 +32,7 @@ class MyApp extends StatelessWidget {
           useMaterial3: true,
           textTheme: GoogleFonts.poppinsTextTheme(),
         ),
-        home: const HomeScreen(),
+        home: const SplashScreen(),
       ),
     );
   }

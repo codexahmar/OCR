@@ -15,6 +15,9 @@ class ResultsDisplay extends StatelessWidget {
         filter: ImageFilter.blur(sigmaX: 15, sigmaY: 15),
         child: Container(
           width: double.infinity,
+          constraints: const BoxConstraints(
+            maxHeight: 350, // Limit max height to prevent overflow
+          ),
           padding: const EdgeInsets.all(16),
           decoration: BoxDecoration(
             color: Colors.white.withOpacity(0.2),
@@ -23,6 +26,7 @@ class ResultsDisplay extends StatelessWidget {
           ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisSize: MainAxisSize.min,
             children: [
               Text(
                 'Results',
@@ -33,7 +37,12 @@ class ResultsDisplay extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: 12),
-              _buildResultsText(),
+              Flexible(
+                child: SingleChildScrollView(
+                  physics: const BouncingScrollPhysics(),
+                  child: _buildResultsText(),
+                ),
+              ),
             ],
           ),
         ),
@@ -111,6 +120,7 @@ class ResultsDisplay extends StatelessWidget {
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisSize: MainAxisSize.min,
       children: resultWidgets,
     );
   }
