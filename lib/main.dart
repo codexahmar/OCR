@@ -6,7 +6,6 @@ import 'package:google_fonts/google_fonts.dart';
 
 import 'controllers/arithmetic_provider.dart';
 
-
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await dotenv.load(fileName: 'assets/.env');

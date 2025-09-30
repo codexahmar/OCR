@@ -98,7 +98,7 @@ class ResultsDisplay extends StatelessWidget {
         } else {
           resultWidgets.add(_buildSimpleLine(line));
         }
-      } else if (line.contains('Final Total')) {
+      } else if (line.contains('Final Total') || line.contains('Grand Total')) {
         resultWidgets.add(const Divider(color: Colors.black26));
         resultWidgets.add(
           Padding(

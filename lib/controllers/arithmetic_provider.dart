@@ -8,13 +8,13 @@ enum ProcessingStatus { idle, loading, success, error }
 
 class ArithmeticProvider extends ChangeNotifier {
   final GeminiService _geminiService = GeminiService();
-  
+
   File? _selectedImage;
   ProcessingStatus _status = ProcessingStatus.idle;
   String _errorMessage = '';
   ArithmeticResults _results = ArithmeticResults.empty();
   String _formattedResults = '';
-  
+
   // Getters
   File? get selectedImage => _selectedImage;
   ProcessingStatus get status => _status;
@@ -25,7 +25,7 @@ class ArithmeticProvider extends ChangeNotifier {
   bool get isProcessing => _status == ProcessingStatus.loading;
   bool get hasResults => _formattedResults.isNotEmpty;
   bool get hasError => _status == ProcessingStatus.error;
-  
+
   // Set selected image
   void setImage(File? image) {
     _selectedImage = image;
@@ -38,25 +38,27 @@ class ArithmeticProvider extends ChangeNotifier {
     }
     notifyListeners();
   }
-  
+
   // Process the selected image
   Future<void> processImage() async {
     if (_selectedImage == null) return;
-    
+
     try {
       _status = ProcessingStatus.loading;
       _errorMessage = '';
       notifyListeners();
-      
+
       // Extract text from image using Gemini API
-      final extractedText = await _geminiService.extractTextFromImage(_selectedImage!);
-      
+      final extractedText = await _geminiService.extractTextFromImage(
+        _selectedImage!,
+      );
+
       // Parse and calculate arithmetic expressions
       _results = ArithmeticParser.parseAndCalculate(extractedText);
-      
+
       // Format results
       _formattedResults = ArithmeticParser.formatResults(_results);
-      
+
       _status = ProcessingStatus.success;
     } catch (e) {
       _status = ProcessingStatus.error;
@@ -65,7 +67,7 @@ class ArithmeticProvider extends ChangeNotifier {
       notifyListeners();
     }
   }
-  
+
   // Reset everything
   void reset() {
     _selectedImage = null;
