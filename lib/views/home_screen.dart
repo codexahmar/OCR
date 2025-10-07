@@ -181,7 +181,7 @@ class HomeScreen extends StatelessWidget {
                                       ),
                                       const SizedBox(height: 6),
                                       Text(
-                                        "AI will read & solve the equation",
+                                        "AI will read & solve the expression",
                                         style: GoogleFonts.orbitron(
                                           color: Colors.white38,
                                           fontSize: 12,
