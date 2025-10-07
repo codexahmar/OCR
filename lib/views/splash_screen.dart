@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-
 import 'home_screen.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -36,6 +35,7 @@ class _SplashScreenState extends State<SplashScreen>
 
     _controller.forward();
 
+    // Navigate after animation
     Timer(const Duration(seconds: 4), () {
       Navigator.pushReplacement(
         context,
@@ -55,86 +55,119 @@ class _SplashScreenState extends State<SplashScreen>
     final size = MediaQuery.of(context).size;
 
     return Scaffold(
-      backgroundColor: const Color(0xFFFFFDE7), // Banana-cream background
-      body: Center(
+      body: Container(
+        width: double.infinity,
+        height: double.infinity,
+        decoration: const BoxDecoration(
+          gradient: LinearGradient(
+            colors: [Color(0xFF0F172A), Color(0xFF1E293B), Color(0xFF0F172A)],
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+          ),
+        ),
         child: Stack(
           alignment: Alignment.center,
           children: [
-            // Expanding background gradient circle
+            // Background glowing orb
             ScaleTransition(
-              scale: _scaleAnim,
+              scale: _glowAnim,
               child: Container(
-                width: size.width * 0.75,
-                height: size.width * 0.75,
+                width: size.width * 0.90,
+                height: size.width * 0.90,
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
                   gradient: const LinearGradient(
-                    colors: [
-                      Color(0xFFFFF176), // soft banana yellow
-                      Color(0xFF81C784), // leaf green
-                    ],
+                    colors: [Color(0xFF6366F1), Color(0xFF14B8A6)],
                     begin: Alignment.topLeft,
                     end: Alignment.bottomRight,
                   ),
                   boxShadow: [
                     BoxShadow(
-                      color: Colors.yellow.withOpacity(0.3),
-                      blurRadius: 30,
-                      spreadRadius: 8,
+                      color: const Color(0xFF6366F1).withOpacity(0.4),
+                      blurRadius: 80,
+                      spreadRadius: 20,
+                    ),
+                    BoxShadow(
+                      color: const Color(0xFF14B8A6).withOpacity(0.3),
+                      blurRadius: 100,
+                      spreadRadius: 35,
                     ),
                   ],
                 ),
               ),
             ),
 
-            // Subtle glowing aura
-            ScaleTransition(
-              scale: _glowAnim,
-              child: Container(
-                width: size.width * 0.85,
-                height: size.width * 0.85,
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  color: Colors.yellow.withOpacity(0.08),
-                ),
-              ),
-            ),
-
-            // Banana icon + shop name
+            // Foreground content
             FadeTransition(
               opacity: _fadeAnim,
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  Text(
-                    "🍌", // Banana emoji (replace later with logo asset)
-                    style: const TextStyle(fontSize: 80),
+                  // --- Icon container ---
+                  ScaleTransition(
+                    scale: _scaleAnim,
+                    child: Container(
+                      width: 150,
+                      height: 150,
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        gradient: const LinearGradient(
+                          colors: [Color(0xFF6366F1), Color(0xFF14B8A6)],
+                          begin: Alignment.topLeft,
+                          end: Alignment.bottomRight,
+                        ),
+                        boxShadow: [
+                          BoxShadow(
+                            color: const Color(0xFF6366F1).withOpacity(0.5),
+                            blurRadius: 40,
+                            spreadRadius: 5,
+                          ),
+                          BoxShadow(
+                            color: const Color(0xFF14B8A6).withOpacity(0.3),
+                            blurRadius: 50,
+                            spreadRadius: 6,
+                          ),
+                        ],
+                      ),
+                      child: const Center(
+                        child: Icon(
+                          Icons.camera_enhance_rounded,
+                          color: Colors.white,
+                          size: 65,
+                        ),
+                      ),
+                    ),
                   ),
-                  const SizedBox(height: 16),
+
+                  const SizedBox(height: 45),
+
+                  // --- App name ---
                   Text(
-                    "The Ghazi Traders",
-                    style: GoogleFonts.poppins(
-                      fontSize: 25,
-                      fontWeight: FontWeight.w700,
+                    "SnapSolve",
+                    style: GoogleFonts.orbitron(
+                      fontSize: 30,
+                      fontWeight: FontWeight.bold,
                       color: Colors.white,
-                      letterSpacing: 1.2,
+                      letterSpacing: 2,
                       shadows: [
                         Shadow(
-                          color: Colors.black.withOpacity(0.2),
-                          blurRadius: 6,
-                          offset: const Offset(2, 2),
+                          color: Colors.tealAccent.withOpacity(0.5),
+                          blurRadius: 18,
                         ),
                       ],
                     ),
                   ),
-                  const SizedBox(height: 10),
+
+                  const SizedBox(height: 12),
+
+                  // --- Tagline ---
                   Text(
-                    "Fresh Bananas • Fresh Deals",
-                    style: GoogleFonts.poppins(
-                      fontSize: 13,
-                      color: Colors.white,
-                      fontWeight: FontWeight.w400,
-                      letterSpacing: 0.5,
+                    "Scan • Solve • Simplify",
+                    style: GoogleFonts.outfit(
+                      fontSize: 18,
+                      color: Colors.white70,
+                      letterSpacing: 0.8,
+                      fontWeight: FontWeight.w500,
                     ),
                   ),
                 ],

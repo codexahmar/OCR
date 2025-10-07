@@ -1,10 +1,12 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_application_1/widgets/actionButtons.dart';
+import 'package:flutter_application_1/widgets/fab.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
-
 import '../controllers/arithmetic_provider.dart';
 import '../widgets/results_display.dart';
 
@@ -13,151 +15,228 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final colorScheme = Theme.of(context).colorScheme;
-
     return Scaffold(
-      backgroundColor: Colors.grey.shade100,
+      extendBodyBehindAppBar: true,
       appBar: AppBar(
-        elevation: 0,
-        backgroundColor: Colors.transparent,
+        automaticallyImplyLeading: false,
         centerTitle: true,
-        title: Text(
-          "Expression Scanner",
-          style: GoogleFonts.poppins(
-            fontSize: 20,
-            fontWeight: FontWeight.w600,
-            color: colorScheme.primary,
+        elevation: 10,
+        backgroundColor: Colors.transparent,
+        flexibleSpace: Container(
+          decoration: const BoxDecoration(
+            gradient: LinearGradient(
+              colors: [Color(0xFF0F2027), Color(0xFF203A43), Color(0xFF2C5364)],
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+            ),
+            borderRadius: BorderRadius.only(
+              bottomLeft: Radius.circular(22),
+              bottomRight: Radius.circular(22),
+            ),
           ),
         ),
+        title: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Icon(
+              Icons.camera_alt_rounded,
+              color: Colors.white.withOpacity(0.95),
+              size: 26,
+            ),
+            const SizedBox(width: 8),
+            Text(
+              "SnapSolve",
+              style: GoogleFonts.orbitron(
+                fontSize: 22,
+                fontWeight: FontWeight.w700,
+                letterSpacing: 1.2,
+                color: Colors.white,
+                shadows: [
+                  Shadow(
+                    color: Colors.tealAccent.withOpacity(0.4),
+                    blurRadius: 8,
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
       ),
-      body: Consumer<ArithmeticProvider>(
-        builder: (context, provider, _) {
-          return Padding(
-            padding: const EdgeInsets.all(16),
-            child: Column(
-              children: [
-                // Image section
-                Expanded(
-                  flex: 4,
-                  child: GestureDetector(
-                    onTap: () => _getImage(context, ImageSource.gallery),
-                    child: AnimatedContainer(
-                      duration: const Duration(milliseconds: 400),
-                      curve: Curves.easeInOut,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(20),
-                        color: Colors.white,
-                        boxShadow: [
-                          BoxShadow(
-                            blurRadius: 10,
-                            spreadRadius: -5,
-                            offset: const Offset(0, 5),
-                            color: Colors.black.withOpacity(0.1),
-                          ),
-                        ],
-                      ),
-                      child: provider.hasImage
-                          ? ClipRRect(
-                              borderRadius: BorderRadius.circular(20),
-                              child: Image.file(
-                                provider.selectedImage!,
-                                fit: BoxFit.cover,
-                                width: double.infinity,
+
+      body: Container(
+        width: double.infinity,
+        height: double.infinity,
+        decoration: const BoxDecoration(
+          gradient: LinearGradient(
+            colors: [Color(0xFF0F2027), Color(0xFF203A43), Color(0xFF2C5364)],
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+          ),
+        ),
+        child: SafeArea(
+          child: Consumer<ArithmeticProvider>(
+            builder: (context, provider, _) {
+              return Padding(
+                padding: const EdgeInsets.all(16),
+                child: Column(
+                  children: [
+                    const SizedBox(height: 12),
+
+                    Expanded(
+                      flex: 4,
+                      child: GestureDetector(
+                        onTap: () => _getImage(context, ImageSource.gallery),
+                        child: Hero(
+                          tag: "upload-box",
+                          child: AnimatedContainer(
+                            duration: const Duration(milliseconds: 600),
+                            curve: Curves.easeOutCubic,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(25),
+                              gradient: const LinearGradient(
+                                colors: [Color(0xFF1E293B), Color(0xFF0F172A)],
+                                begin: Alignment.topLeft,
+                                end: Alignment.bottomRight,
                               ),
-                            )
-                          : Center(
-                              child: Column(
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  Icon(
-                                    Icons.image_outlined,
-                                    size: 60,
-                                    color: Colors.grey.shade400,
-                                  ),
-                                  const SizedBox(height: 12),
-                                  Text(
-                                    "Tap to upload image",
-                                    style: GoogleFonts.poppins(
-                                      color: Colors.grey.shade600,
-                                      fontSize: 15,
+                              border: Border.all(
+                                color: Color(0xFF14B8A6).withOpacity(0.3),
+                                width: 1.2,
+                              ),
+                              boxShadow: [
+                                BoxShadow(
+                                  blurRadius: 25,
+                                  spreadRadius: 2,
+                                  color: const Color(
+                                    0xFF14B8A6,
+                                  ).withOpacity(0.25),
+                                  offset: const Offset(0, 10),
+                                ),
+                              ],
+                            ),
+                            child: provider.hasImage
+                                ? ClipRRect(
+                                    borderRadius: BorderRadius.circular(25),
+                                    child: Image.file(
+                                      provider.selectedImage!,
+                                      fit: BoxFit.cover,
+                                      width: double.infinity,
+                                      height: double.infinity,
+                                    ),
+                                  )
+                                : Center(
+                                    child: Column(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        Container(
+                                          decoration: BoxDecoration(
+                                            shape: BoxShape.circle,
+                                            gradient: const LinearGradient(
+                                              colors: [
+                                                Color(0xFF14B8A6),
+                                                Color(0xFF6366F1),
+                                              ],
+                                              begin: Alignment.topLeft,
+                                              end: Alignment.bottomRight,
+                                            ),
+                                            boxShadow: [
+                                              BoxShadow(
+                                                color: Color(
+                                                  0xFF14B8A6,
+                                                ).withOpacity(0.5),
+                                                blurRadius: 30,
+                                                spreadRadius: 3,
+                                              ),
+                                            ],
+                                          ),
+                                          padding: const EdgeInsets.all(22),
+                                          child: const Icon(
+                                            Icons.add_a_photo_rounded,
+                                            size: 54,
+                                            color: Colors.white,
+                                          ),
+                                        ),
+                                        const SizedBox(height: 20),
+                                        Text(
+                                          "Tap to upload image",
+                                          style: GoogleFonts.orbitron(
+                                            color: Colors.white70,
+                                            fontSize: 17,
+                                            fontWeight: FontWeight.w500,
+                                            letterSpacing: 1.2,
+                                          ),
+                                        ),
+                                        const SizedBox(height: 6),
+                                        Text(
+                                          "AI will read & solve the equation",
+                                          style: GoogleFonts.orbitron(
+                                            color: Colors.white38,
+                                            fontSize: 12,
+                                            letterSpacing: 0.8,
+                                          ),
+                                        ),
+                                      ],
                                     ),
                                   ),
-                                ],
-                              ),
-                            ),
-                    ),
-                  ),
-                ),
-
-                const SizedBox(height: 20),
-
-                // Buttons
-                Row(
-                  children: [
-                    Expanded(
-                      child: _buildRoundedButton(
-                        context,
-                        label: "Camera",
-                        icon: Icons.camera_alt,
-                        onPressed: () => _getImage(context, ImageSource.camera),
-                        isPrimary: true,
+                          ),
+                        ),
                       ),
                     ),
-                    const SizedBox(width: 16),
+
+                    const SizedBox(height: 24),
+
+                    Row(
+                      children: [
+                        Expanded(
+                          child: ActionButton(
+                            label: "Camera",
+                            icon: Icons.camera_alt_rounded,
+                            onPressed: () =>
+                                _getImage(context, ImageSource.camera),
+                            isPrimary: true,
+                          ),
+                        ),
+                        const SizedBox(width: 16),
+                        Expanded(
+                          child: ActionButton(
+                            label: "Gallery",
+                            icon: Icons.photo_library_rounded,
+                            onPressed: () =>
+                                _getImage(context, ImageSource.gallery),
+                            isPrimary: false,
+                          ),
+                        ),
+                      ],
+                    ),
+
+                    const SizedBox(height: 24),
+
                     Expanded(
-                      child: _buildRoundedButton(
-                        context,
-                        label: "Gallery",
-                        icon: Icons.photo_library,
-                        onPressed: () =>
-                            _getImage(context, ImageSource.gallery),
-                        isPrimary: false,
+                      flex: 5,
+                      child: AnimatedSwitcher(
+                        duration: const Duration(milliseconds: 600),
+                        transitionBuilder: (child, animation) {
+                          return FadeTransition(
+                            opacity: animation,
+                            child: SlideTransition(
+                              position: Tween<Offset>(
+                                begin: const Offset(0, 0.1),
+                                end: Offset.zero,
+                              ).animate(animation),
+                              child: child,
+                            ),
+                          );
+                        },
+                        child: _buildResultsSection(provider),
                       ),
                     ),
                   ],
                 ),
-
-                const SizedBox(height: 20),
-
-                // Results
-                Expanded(
-                  flex: 5,
-                  child: AnimatedSwitcher(
-                    duration: const Duration(milliseconds: 400),
-                    child: _buildResultsSection(provider),
-                  ),
-                ),
-              ],
-            ),
-          );
-        },
+              );
+            },
+          ),
+        ),
       ),
-      floatingActionButton: _buildFAB(context),
-    );
-  }
-
-  Widget _buildRoundedButton(
-    BuildContext context, {
-    required String label,
-    required IconData icon,
-    required VoidCallback onPressed,
-    required bool isPrimary,
-  }) {
-    final colorScheme = Theme.of(context).colorScheme;
-    return ElevatedButton.icon(
-      style: ElevatedButton.styleFrom(
-        elevation: 0,
-        backgroundColor: isPrimary ? colorScheme.primary : Colors.white,
-        foregroundColor: isPrimary ? Colors.white : colorScheme.primary,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
-        padding: const EdgeInsets.symmetric(vertical: 14),
-      ),
-      onPressed: onPressed,
-      icon: Icon(icon, size: 20),
-      label: Text(
-        label,
-        style: GoogleFonts.poppins(fontWeight: FontWeight.w500),
-      ),
+      floatingActionButton: FABActions(),
     );
   }
 
@@ -167,72 +246,56 @@ class HomeScreen extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            SpinKitFadingCircle(color: Colors.blue, size: 50),
+            SpinKitThreeBounce(color: Colors.tealAccent, size: 40),
             const SizedBox(height: 16),
             Text(
               "Analyzing your image...",
-              style: GoogleFonts.poppins(
+              style: GoogleFonts.outfit(
                 fontSize: 15,
                 fontWeight: FontWeight.w500,
-                color: Colors.grey.shade700,
+                color: Colors.white70,
               ),
             ),
           ],
         ),
       );
     } else if (provider.hasError) {
-      return Container(
-        padding: const EdgeInsets.all(16),
-        decoration: BoxDecoration(
-          color: Colors.red.shade50,
-          borderRadius: BorderRadius.circular(12),
-          border: Border.all(color: Colors.red.shade200),
-        ),
-        child: Text(
-          provider.errorMessage,
-          style: GoogleFonts.poppins(fontSize: 14, color: Colors.red.shade700),
-        ),
-      );
+      return _buildError(provider.errorMessage);
     } else if (provider.hasResults) {
       return ResultsDisplay(results: provider.formattedResults);
     }
 
     return Center(
       child: Text(
-        "Your results will appear here",
-        style: GoogleFonts.poppins(fontSize: 15, color: Colors.grey.shade500),
+        "Results will appear here",
+        style: GoogleFonts.outfit(fontSize: 20, color: Colors.white54),
       ),
     );
   }
 
-  Widget? _buildFAB(BuildContext context) {
-    return Consumer<ArithmeticProvider>(
-      builder: (context, provider, _) {
-        if (provider.hasImage && !provider.isProcessing) {
-          return FloatingActionButton.extended(
-            onPressed: () {
-              provider.processImage();
-            },
-            icon: const Icon(Icons.calculate, color: Colors.white),
-            label: Text(
-              "Process",
-              style: GoogleFonts.poppins(
-                fontWeight: FontWeight.w600,
-                color: Colors.white,
-              ),
-            ),
-            backgroundColor: Theme.of(context).colorScheme.primary,
-          );
-        }
-        return const SizedBox.shrink();
-      },
+  Widget _buildError(String msg) {
+    return AnimatedContainer(
+      duration: const Duration(milliseconds: 400),
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: Colors.red.withOpacity(0.1),
+        borderRadius: BorderRadius.circular(14),
+        border: Border.all(color: Colors.redAccent.withOpacity(0.3)),
+      ),
+      child: Text(
+        msg,
+        style: GoogleFonts.outfit(
+          fontSize: 14,
+          color: Colors.redAccent,
+          fontWeight: FontWeight.w500,
+        ),
+      ),
     );
   }
 
   Future<void> _getImage(BuildContext context, ImageSource source) async {
     final provider = Provider.of<ArithmeticProvider>(context, listen: false);
     final picker = ImagePicker();
-
     try {
       final pickedFile = await picker.pickImage(source: source);
       if (pickedFile != null) {
