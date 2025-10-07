@@ -32,7 +32,6 @@ class GeminiService {
 
       final base64Image = base64Encode(bytes);
 
-      // Improved prompt: ask Gemini to return plain text preserving rows and columns.
       final body = jsonEncode({
         "contents": [
           {

@@ -1,8 +1,6 @@
 import '../models/arithmetic_result.dart';
 
 class ArithmeticParser {
-  /// Parses text containing arithmetic expressions and calculates results.
-  /// Supports +, -, *, / with correct precedence and parentheses.
   static ArithmeticResults parseAndCalculate(String text) {
     final lines = text.split(RegExp(r'\r?\n'));
     final List<ArithmeticResult> results = [];
@@ -11,7 +9,6 @@ class ArithmeticParser {
       final line = raw.trim();
       if (line.isEmpty) continue;
 
-      // Split row into columns by | (or whitespace if you prefer)
       final cells = line.split('|');
 
       double rowTotal = 0.0;
@@ -33,25 +30,19 @@ class ArithmeticParser {
     return ArithmeticResults(rows: results, grandTotal: grandTotal);
   }
 
-  /// Extracts a clean arithmetic expression containing only digits,
-  /// decimal point, + - * / and parentheses. Converts common symbols × and ÷ to * and /.
   static String _extractExpression(String input) {
     if (input.trim().isEmpty) return '';
 
-    // Normalize common multiply/divide symbols and remove unwanted chars
     var s = input
         .replaceAll('×', '*')
         .replaceAll('X', '*')
         .replaceAll('x', '*');
     s = s.replaceAll('÷', '/');
 
-    // Keep only digits, operators, parentheses and decimal point (replace others with nothing)
     s = s.replaceAll(RegExp(r'[^0-9\.\+\-\*\/\(\)]'), '');
 
-    // Quick sanity check: must contain at least one digit and one operator (or more digits separated by operators)
     if (!RegExp(r'\d').hasMatch(s)) return '';
 
-    // Fix simple unary minus cases: "-5" -> "0-5", "(-5" -> "(0-5"
     if (s.startsWith('-')) s = '0$s';
     s = s.replaceAll('(-', '(0-');
 
@@ -64,22 +55,17 @@ class ArithmeticParser {
     try {
       return _evaluateExpression(expr);
     } catch (e) {
-      // On any parse/eval error return 0.0 (keeps app stable)
       return 0.0;
     }
   }
 
-  /// Evaluate expression using shunting-yard -> RPN evaluation.
-  /// Supports numbers (decimals), + - * / and parentheses.
   static double _evaluateExpression(String expr) {
     final s = expr.replaceAll(' ', '');
 
-    // Tokenize numbers and operators
     final tokenRegex = RegExp(r'\d+\.\d+|\d+|[+\-*/()]');
     final matches = tokenRegex.allMatches(s);
     final tokens = matches.map((m) => m.group(0)!).toList();
 
-    // Shunting-yard to convert to RPN
     final output = <String>[];
     final ops = <String>[];
 
@@ -159,7 +145,6 @@ class ArithmeticParser {
     return stack.single;
   }
 
-  /// Formats results as the same text-based output your app expects.
   static String formatResults(ArithmeticResults results) {
     final buffer = StringBuffer();
 
@@ -185,7 +170,6 @@ class ArithmeticParser {
     if (v == v.roundToDouble()) {
       return v.toInt().toString();
     } else {
-      // show up to 4 decimals without trailing zeros
       return v.toStringAsFixed(4).replaceFirst(RegExp(r'\.?0+$'), '');
     }
   }

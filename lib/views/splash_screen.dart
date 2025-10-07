@@ -35,7 +35,6 @@ class _SplashScreenState extends State<SplashScreen>
 
     _controller.forward();
 
-    // Navigate after animation
     Timer(const Duration(seconds: 4), () {
       Navigator.pushReplacement(
         context,
@@ -68,12 +67,11 @@ class _SplashScreenState extends State<SplashScreen>
         child: Stack(
           alignment: Alignment.center,
           children: [
-            // Background glowing orb
             ScaleTransition(
               scale: _glowAnim,
               child: Container(
-                width: size.width * 0.90,
-                height: size.width * 0.90,
+                width: size.width * 0.93,
+                height: size.width * 0.93,
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
                   gradient: const LinearGradient(
@@ -97,13 +95,11 @@ class _SplashScreenState extends State<SplashScreen>
               ),
             ),
 
-            // Foreground content
             FadeTransition(
               opacity: _fadeAnim,
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  // --- Icon container ---
                   ScaleTransition(
                     scale: _scaleAnim,
                     child: Container(
@@ -141,7 +137,6 @@ class _SplashScreenState extends State<SplashScreen>
 
                   const SizedBox(height: 45),
 
-                  // --- App name ---
                   Text(
                     "SnapSolve",
                     style: GoogleFonts.orbitron(
@@ -160,7 +155,6 @@ class _SplashScreenState extends State<SplashScreen>
 
                   const SizedBox(height: 12),
 
-                  // --- Tagline ---
                   Text(
                     "Scan • Solve • Simplify",
                     style: GoogleFonts.outfit(

@@ -20,7 +20,7 @@ class MyApp extends StatelessWidget {
     return ChangeNotifierProvider(
       create: (_) => ArithmeticProvider(),
       child: MaterialApp(
-        title: 'Arithmetic Calculator',
+        title: 'SnapSolve',
         debugShowCheckedModeBanner: false,
         theme: ThemeData(
           colorScheme: ColorScheme.fromSeed(

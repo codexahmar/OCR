@@ -26,10 +26,9 @@ class ArithmeticProvider extends ChangeNotifier {
   bool get hasResults => _formattedResults.isNotEmpty;
   bool get hasError => _status == ProcessingStatus.error;
 
-  // Set selected image
   void setImage(File? image) {
     _selectedImage = image;
-    // Reset results when a new image is selected
+
     if (image != null) {
       _status = ProcessingStatus.idle;
       _errorMessage = '';

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_application_1/widgets/actionButtons.dart';
 import 'package:flutter_application_1/widgets/fab.dart';
+import 'package:flutter_application_1/widgets/image_preview.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
@@ -86,98 +87,110 @@ class HomeScreen extends StatelessWidget {
                       flex: 4,
                       child: GestureDetector(
                         onTap: () => _getImage(context, ImageSource.gallery),
-                        child: Hero(
-                          tag: "upload-box",
-                          child: AnimatedContainer(
-                            duration: const Duration(milliseconds: 600),
-                            curve: Curves.easeOutCubic,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(25),
-                              gradient: const LinearGradient(
-                                colors: [Color(0xFF1E293B), Color(0xFF0F172A)],
-                                begin: Alignment.topLeft,
-                                end: Alignment.bottomRight,
-                              ),
-                              border: Border.all(
-                                color: Color(0xFF14B8A6).withOpacity(0.3),
-                                width: 1.2,
-                              ),
-                              boxShadow: [
-                                BoxShadow(
-                                  blurRadius: 25,
-                                  spreadRadius: 2,
-                                  color: const Color(
-                                    0xFF14B8A6,
-                                  ).withOpacity(0.25),
-                                  offset: const Offset(0, 10),
-                                ),
-                              ],
+                        child: AnimatedContainer(
+                          duration: const Duration(milliseconds: 600),
+                          curve: Curves.easeOutCubic,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(25),
+                            gradient: const LinearGradient(
+                              colors: [Color(0xFF1E293B), Color(0xFF0F172A)],
+                              begin: Alignment.topLeft,
+                              end: Alignment.bottomRight,
                             ),
-                            child: provider.hasImage
-                                ? ClipRRect(
-                                    borderRadius: BorderRadius.circular(25),
-                                    child: Image.file(
-                                      provider.selectedImage!,
-                                      fit: BoxFit.cover,
-                                      width: double.infinity,
-                                      height: double.infinity,
-                                    ),
-                                  )
-                                : Center(
-                                    child: Column(
-                                      mainAxisSize: MainAxisSize.min,
-                                      children: [
-                                        Container(
-                                          decoration: BoxDecoration(
-                                            shape: BoxShape.circle,
-                                            gradient: const LinearGradient(
-                                              colors: [
-                                                Color(0xFF14B8A6),
-                                                Color(0xFF6366F1),
-                                              ],
-                                              begin: Alignment.topLeft,
-                                              end: Alignment.bottomRight,
-                                            ),
-                                            boxShadow: [
-                                              BoxShadow(
-                                                color: Color(
-                                                  0xFF14B8A6,
-                                                ).withOpacity(0.5),
-                                                blurRadius: 30,
-                                                spreadRadius: 3,
-                                              ),
-                                            ],
-                                          ),
-                                          padding: const EdgeInsets.all(22),
-                                          child: const Icon(
-                                            Icons.add_a_photo_rounded,
-                                            size: 54,
-                                            color: Colors.white,
-                                          ),
+                            border: Border.all(
+                              color: const Color(0xFF14B8A6).withOpacity(0.3),
+                              width: 1.2,
+                            ),
+                            boxShadow: [
+                              BoxShadow(
+                                blurRadius: 25,
+                                spreadRadius: 2,
+                                color: const Color(
+                                  0xFF14B8A6,
+                                ).withOpacity(0.25),
+                                offset: const Offset(0, 10),
+                              ),
+                            ],
+                          ),
+                          child: provider.hasImage
+                              ? GestureDetector(
+                                  onTap: () {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (_) => ImagePreviewScreen(
+                                          imageFile: provider.selectedImage!,
                                         ),
-                                        const SizedBox(height: 20),
-                                        Text(
-                                          "Tap to upload image",
-                                          style: GoogleFonts.orbitron(
-                                            color: Colors.white70,
-                                            fontSize: 17,
-                                            fontWeight: FontWeight.w500,
-                                            letterSpacing: 1.2,
-                                          ),
-                                        ),
-                                        const SizedBox(height: 6),
-                                        Text(
-                                          "AI will read & solve the equation",
-                                          style: GoogleFonts.orbitron(
-                                            color: Colors.white38,
-                                            fontSize: 12,
-                                            letterSpacing: 0.8,
-                                          ),
-                                        ),
-                                      ],
+                                      ),
+                                    );
+                                  },
+                                  child: Hero(
+                                    tag: "uploaded-image-preview",
+                                    child: ClipRRect(
+                                      borderRadius: BorderRadius.circular(25),
+                                      child: Image.file(
+                                        provider.selectedImage!,
+                                        fit: BoxFit.cover,
+                                        width: double.infinity,
+                                        height: double.infinity,
+                                      ),
                                     ),
                                   ),
-                          ),
+                                )
+                              : Center(
+                                  child: Column(
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: [
+                                      Container(
+                                        decoration: BoxDecoration(
+                                          shape: BoxShape.circle,
+                                          gradient: const LinearGradient(
+                                            colors: [
+                                              Color(0xFF14B8A6),
+                                              Color(0xFF6366F1),
+                                            ],
+                                            begin: Alignment.topLeft,
+                                            end: Alignment.bottomRight,
+                                          ),
+                                          boxShadow: [
+                                            BoxShadow(
+                                              color: const Color(
+                                                0xFF14B8A6,
+                                              ).withOpacity(0.5),
+                                              blurRadius: 30,
+                                              spreadRadius: 3,
+                                            ),
+                                          ],
+                                        ),
+                                        padding: const EdgeInsets.all(22),
+                                        child: const Icon(
+                                          Icons.add_a_photo_rounded,
+                                          size: 54,
+                                          color: Colors.white,
+                                        ),
+                                      ),
+                                      const SizedBox(height: 20),
+                                      Text(
+                                        "Tap to upload image",
+                                        style: GoogleFonts.orbitron(
+                                          color: Colors.white70,
+                                          fontSize: 17,
+                                          fontWeight: FontWeight.w500,
+                                          letterSpacing: 1.2,
+                                        ),
+                                      ),
+                                      const SizedBox(height: 6),
+                                      Text(
+                                        "AI will read & solve the equation",
+                                        style: GoogleFonts.orbitron(
+                                          color: Colors.white38,
+                                          fontSize: 12,
+                                          letterSpacing: 0.8,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
                         ),
                       ),
                     ),
